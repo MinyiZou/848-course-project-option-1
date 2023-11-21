@@ -1,34 +1,34 @@
 package main
+type deck []string
 
-import "fmt"
+func newDeck() deck {
+	cards := deck{}
 
-type shape interface {
-	getArea() float64
+	suits := deck{"1", "2", "3", "4"}
+	values := deck{"a", "b", "c"}
+
+	for _, suit := range suits {
+		for _, value := range values {
+			cards = append(cards, suit+" of "+value)
+		}
+	}
+	return cards
 }
-type triangle struct {
-	base   float64
-	height float64
+
+func (d deck) print() {
+	for i, card := range d {
+		fmt.Println(i, card)
+	}
 }
-type square struct {
-	sideLength float64
+
+func deal(d deck, hanSize int) (deck, deck) {
+	return d[:hanSize], d[hanSize:]
 }
 
 func main() {
-	t := triangle{5, 5}
-	s := square{5}
+	cards := newDeck()
 
-	printArea(t)
-	printArea(s)
-}
-
-func (t triangle) getArea() float64 {
-	return 0.5 * t.base * t.height
-}
-
-func (s square) getArea() float64 {
-	return s.sideLength * s.sideLength
-}
-
-func printArea(s shape) {
-	fmt.Println(s.getArea())
+	hand, remain := deal(cards, 2)
+	hand.print()
+	remain.print()
 }
